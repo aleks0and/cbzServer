@@ -110,7 +110,30 @@ paths:
                 $ref: '#/components/schemas/institution'
         '400':
           description: 'cant get place info'
-          
+  /Place/find:
+    get:
+      tags:
+        - user_S
+      summary: 'find nearby places'
+      operationId: findPlacesNearby
+      responses:
+        '200':
+          description: 'received nearby places'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/institution'
+        '400':
+          description: 'cant get nearby places'
+      parameters:
+        - in: query
+          name: UserLocation
+          description: 'Location of the initial point' 
+          required: true
+          schema:
+            $ref: '#/components/schemas/locationPoint'
   /Place/mark:
     post:
       tags:
