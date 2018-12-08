@@ -137,19 +137,20 @@ paths:
   /user/register:
     post:
       summary: 'Register new user'
-      operationId: notify
+      operationId: newUser
       responses:
         '200':
           description: 'registration complete'
         '400':
-          description: 'invalid input, object invalid'
+          description: 'invalid input or unable to register'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/departurePoint'
-        description: 'user sends informationa bout departure to the caretaker.'
-
+              $ref: '#/components/schemas/registrationForm'
+                
+        description: 'user registers to our database'
+  
 components:
   schemas:
     DisabilityType:
@@ -249,7 +250,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DisabilityType'
-
+  
+    registrationForm:
+      type: object
+      properties:
+        userS: 
+          type: object
+          $ref: '#/components/schemas/userS'
+        userC:
+          type: object
+          $ref: '#/components/schemas/userC'
+        timestamp:
+          type: string
+          format: date-time
+      
     locationPoint:
       type: object
       required:
