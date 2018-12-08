@@ -1,0 +1,258 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/CBZ/cbzAPI1/1.0.0
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: CBZ API
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+# tags are used for organizing operations
+tags:
+- name: user_S
+  description: Operations available for normal users
+- name: user_C
+  description: Operations available for caretakers
+- name: admin
+  description: Secured Admin-only calls
+
+paths:
+  /RouteService:
+    get:
+      tags:
+        - user_S
+      summary: requests directions
+      operationId: requestRoute
+      description: |
+        By sending the current location and the destination, requests path. 
+      parameters:
+        - in: query
+          name: UserLocation
+          description: 'Location of the initial point' 
+          required: true
+          schema:
+            $ref: '#/components/schemas/locationPoint'
+        - in: query
+          name: DestinationLocation
+          description: 'destination point '
+          required: true
+          schema:
+            $ref: '#/components/schemas/locationPoint'
+        - in: query
+          name: departureTime
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+        - in: query
+          name: arrivalTime
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses:
+        '200':
+          description: 'search results matching criteria'
+        '400':
+          description: 'bad input parameter'
+    post:
+      tags:
+        - user_S
+      summary: Sends notification about departure
+      operationId: notify
+      responses:
+        '200':
+          description: notification sent
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/departurePoint'
+        description: 'user sends informationa bout departure to the caretaker.'
+  /location:
+    post:
+      tags:
+        - user_S
+      summary: Mark location
+      descritpion: User comments over the places disability providing
+      operationId: markPlace
+      responses:
+        '200':
+          description: succesfull marking
+        '403':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/comment'
+        description: place to be marked
+  /user:
+    post:
+      tags:
+        - user_S
+      summary: 'sends the location of user to the caretaker'
+      operationId: shareLocation
+      responses:
+        '203': 
+          description: location shared
+        '405':
+          description: not possibru
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/locationPoint'
+        description: 'location of the user'
+    get:
+      tags:
+        - user_S
+        - user_C
+      summary: get user info
+      operationId: getUserInfo
+      description: |
+        Send user id to get the 
+      parameters:
+        - in: query
+          name: userID
+          type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'sending user info'
+        '400':
+          description: 'invalid output'
+        
+
+components:
+  schemas:
+    DisabilityType:
+      type: string
+      enum:
+        - type1
+        - type2
+        - type3
+    Iuser:
+      type: object
+      required: 
+      - id
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        image:
+          type: string
+    userS:
+      allOf:
+        - $ref: '#/components/schemas/Iuser'
+        - type: object
+          properties:
+            caretaker:
+              type: string
+              description: "Id opiekuna"
+            disabilityType:
+              $ref: '#/components/schemas/DisabilityType'
+    userC:
+      allOf:
+        - $ref: '#/components/schemas/Iuser'
+        - type: object
+          properties:
+            pupil:
+              type: string
+        
+              description: "Id podopiecznego"
+            institution:
+              type: string
+            
+              description: "Id placowki opiekuna"
+          xml:
+            name: "opiekun"
+    institution:
+      type: object
+      required: 
+        - id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        image:
+          type: string
+        disabilityAvailable:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisabilityType'
+        caretaker:
+          type: string
+          description: "Id opiekuna placowki"
+        location:
+          type: object 
+          $ref: '#/components/schemas/locationPoint'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/comment'
+      xml:
+        name: "instytucja"  
+    comment:
+      type: object
+      properties:
+        commentContent:
+          type: string
+        date:
+          type: string
+          format: date-time
+        userId:
+          type: string
+        placeID:
+          type: string
+        disabilityType:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisabilityType'
+
+    locationPoint:
+      type: object
+      required:
+        - Latitude
+        - Longitude
+      properties:
+        Latitude:
+          type: string
+        Longitude:
+          type: string
+    departurePoint:
+      type: object
+      required:
+        - id_place
+        - departureTime
+      properties:
+        id_place:
+          type: string
+        departureTime:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
