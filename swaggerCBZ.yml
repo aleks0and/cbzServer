@@ -57,9 +57,14 @@ paths:
             example: 2016-08-29T09:12:33.001Z
       responses:
         '200':
-          description: 'search results matching criteria'
+          description: 'succesfully received route'
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/directions'
         '400':
-          description: 'bad input parameter'
+          description: 'cant get directions'
     post:
       tags:
         - user_S
@@ -69,22 +74,52 @@ paths:
         '200':
           description: 'notification sent'
         '400':
-          description: 'invalid input, object invalid'
+          description: 'something went wrong with sending the notification'
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/departurePoint'
         description: 'user sends informationa bout departure to the caretaker.'
-  /location:
+  /Place:
+     get:
+      tags:
+        - user_S
+      summary: 'get place information'
+      operationId: requestRoute
+      description: |
+        By sending the palce location or id, requests infroamtion about place. 
+      parameters:
+        - in: query
+          name: PlaceId
+          description: 'Id of place to look for' 
+          schema:
+            type: string
+        - in: query
+          name: placeLocation
+          description: 'location of point to look for'
+          schema:
+            $ref: '#/components/schemas/locationPoint'
+      responses:
+        '200':
+          description: 'search results matching criteria'
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/institution'
+        '400':
+          description: 'cant get place info'
+          
+  /Place/mark:
     post:
       tags:
         - user_S
-      summary: User comments over the places disability providing
+      summary: 'User comments over the places disability availability'
       operationId: markPlace
       responses:
         '200':
-          description: succesfull marking
+          description: 'succesfull marking'
         '403':
           description: 'invalid input, object invalid'
       requestBody:
@@ -100,9 +135,9 @@ paths:
       operationId: shareLocation
       responses:
         '200': 
-          description: location shared
+          description: 'location shared'
         '400':
-          description: not possibru
+          description: 'cant send the user location to caretaker'
       requestBody:
         content:
           application/json:
@@ -114,10 +149,10 @@ paths:
       tags:
         - user_C
         - user_S
-      summary: get user info
+      summary: 'get user info'
       operationId: getUserInfo
       description: |
-        Send user id to get the 
+        Send user id to get the user information
       parameters:
         - in: query
           name: userID
@@ -133,7 +168,7 @@ paths:
                 type: object
                 $ref: '#/components/schemas/Iuser'
         '400':
-          description: 'invalid output'
+          description: 'cant get user info'
   /user/register:
     post:
       summary: 'Register new user'
@@ -148,7 +183,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/registrationForm'
-                
         description: 'user registers to our database'
   
 components:
@@ -263,7 +297,16 @@ components:
         timestamp:
           type: string
           format: date-time
-      
+    
+    directions:
+      type: object
+      properties:
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/locationPoint'
+    
+    
     locationPoint:
       type: object
       required:
