@@ -1,0 +1,354 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: Simple API
+  contact:
+    email: tomasz@barcikowski.eu
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: view
+  - name: service
+  - name: update
+paths:
+  /view/users:
+      get:
+        tags:
+          - view
+        summary: Returns lists of users
+        description: Returns list of all users
+        responses:
+          '200':
+            description: Request success
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/User'
+          '400':
+            description: Request failed
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMsg:
+                      type: string
+  /view/places:
+      get:
+        tags:
+          - view
+        summary: Returns lists of places
+        description: Returns list of all places ids
+        responses:
+          '200':
+            description: Request success
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Place'
+          '400':
+            description: Request failed
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMsg:
+                      type: string
+  /view/disabilities:
+    get:
+      tags:
+        - view
+      summary: Returns lists of places
+      description: Returns list of all places ids
+      responses:
+        '200':
+          description: Request success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Place'
+        '400':
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorMsg:
+                    type: string
+    
+                      
+  /service/accessiblePlaces:
+      post:
+        tags:
+          - service
+        summary: Returns lists of places in radius
+        description: Returns list of all accesible places in radius
+        requestBody:
+          $ref: '#/components/requestBodies/AccesiblePlaces'
+        responses:
+          '200':
+            description: Request success
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Place'
+          '400':
+            description: Request failed
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMsg:
+                      type: string
+
+  /service/routes:
+      post:
+        tags:
+          - service
+        summary: Returns accesible route
+        description: Returns accesible rout
+        requestBody:
+          $ref: '#/components/requestBodies/AccesibleRoutes'
+        responses:
+          '200':
+            description: Request success
+            content:
+              application/json:
+                schema:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/Route'
+          '400':
+            description: Request failed
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMsg:
+                      type: string
+  /service/addComment:
+      post:
+        tags:
+          - service
+        summary: Returns accesible route
+        description: Returns accesible rout
+        requestBody:
+          $ref: '#/components/requestBodies/AddComment'
+        responses:
+          '200':
+            description: Request success
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    statusMsg:
+                      type: string
+          '400':
+            description: Request failed
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    errorMsg:
+                      type: string
+  /update/location:
+    post:
+      tags:
+      - update
+      summary: Updates location
+      description: Updates location of a user
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateLocation'
+      responses:
+        '200':
+          description: Request success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusMsg:
+                    type: string
+        '400':
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorMsg:
+                    type: string      
+                    
+  /update/user:
+    post:
+      tags:
+      - update
+      summary: Updates location
+      description: Updates location of a user
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateUser'
+      responses:
+        '200':
+          description: Request success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusMsg:
+                    type: string
+        '400':
+          description: Request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorMsg:
+                    type: string    
+
+components:
+  requestBodies:
+    AccesiblePlaces:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              location:
+                $ref: '#/components/schemas/Location'
+              radius:
+                type: string
+              disabilityType:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disability'
+                  
+    AccesibleRoutes:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              startLocation:
+                $ref: '#/components/schemas/Location'
+              endLocation:
+                $ref: '#/components/schemas/Location'
+              disabilityType:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disability'
+                  
+    AddComment:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              place:
+                $ref: '#/components/schemas/Place'
+              disabilityType:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disability'
+              comment:
+                type: string
+              rating:
+                type: string
+                  
+    UpdateLocation:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              currentLocation:
+                $ref: '#/components/schemas/Location'
+              user:
+                $ref: '#/components/schemas/User'   
+    UpdateUser:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'   
+            
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+        disabilityType:
+          type: array
+          items:
+            $ref: '#/components/schemas/Disability'
+        caretaker:
+          type: array
+          items: 
+            $ref: '#/components/schemas/User'
+        
+    Disability:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+            
+    Place:
+      type: object
+      properties:
+        id:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        description:
+          type: string
+        placeScore:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceScore'
+            
+    PlaceScore:
+      type: object
+      properties:
+        disability:
+          $ref: '#/components/schemas/Disability'
+        score:
+          type: string
+          
+    Location:
+      type: object
+      properties:
+        lat:
+          type: string
+        lng:
+          type: string
+          
+    Route:
+      type: array
+      items: 
+        $ref: '#/components/schemas/Location'
