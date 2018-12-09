@@ -177,7 +177,7 @@ public class UpdateApiController implements UpdateApi {
                 if (checkIfNotMovedFor10Requestes(locationsUpdate)){
                     Map<String,Object> loc = new LinkedHashMap<>();
                     String firebase_baseLocUrl = "https://hackhaton-cbz.firebaseio.com/places/";
-                    firebase_baseLocUrl = firebase_baseUrl + Currentloc.get("lat")+ Currentloc.get("lng");
+                    firebase_baseLocUrl = firebase_baseLocUrl + Currentloc.get("lat")+ Currentloc.get("lng");
                     Firebase firebaseLoc = new Firebase(firebase_baseLocUrl);
                     Map<String,Object> dataLocBaseBody = (Map<String,Object>)firebaseLoc.get().getBody();
                     if(dataLocBaseBody.size()!=0)
