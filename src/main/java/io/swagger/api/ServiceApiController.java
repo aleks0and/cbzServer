@@ -37,6 +37,7 @@ public class ServiceApiController implements ServiceApi {
 
     public ResponseEntity<List<Place>> serviceAccessiblePlacesPost(@ApiParam(value = ""  )  @Valid @RequestBody Object body) {
         String accept = request.getHeader("Accept");
+
         return new ResponseEntity<List<Place>>(HttpStatus.NOT_IMPLEMENTED);
     }
 

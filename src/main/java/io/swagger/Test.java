@@ -20,10 +20,8 @@ public class Test {
         if( firebase_baseUrl == null || firebase_baseUrl.trim().isEmpty() ) {
             throw new IllegalArgumentException( "Program-argument 'baseUrl' not found but required" );
         }
-
         // create the firebase
-        Firebase firebase = new Firebase( firebase_baseUrl );
-
+        Firebase firebase = new Firebase( firebase_baseUrl);
         System.out.println( firebase.get().getBody());
 
     }
