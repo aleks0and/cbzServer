@@ -25,8 +25,6 @@ public class ViewApiControllerIntegrationTest {
 
     @Test
     public void viewDisabilitiesGetTest() throws Exception {
-        ResponseEntity<List<Place>> responseEntity = api.viewDisabilitiesGet();
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 
     @Test

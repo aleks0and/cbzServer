@@ -85,7 +85,8 @@ public class UpdateApiController implements UpdateApi {
             listLng.add(new BigDecimal(lng.replaceAll(",", "")));
             listLat.add(new BigDecimal(lat.replaceAll(",", "")));
         }
-        for (int i = 1; i < listLat.size(); i++)
+        //for (int i = 1; i < listLat.size(); i++)
+        for (int i = 1; i < 3; i++)
         {
             double dist = Math.sqrt(Math.pow(listLat.get(i).subtract(listLat.get(i-1)).doubleValue(),2)+Math.pow(listLng.get(i).subtract(listLng.get(i-1)).doubleValue(),2));
             if (dist > 50)
@@ -101,13 +102,13 @@ public class UpdateApiController implements UpdateApi {
             locationDiabilityRating = (Map<String, Object>) location.get("placeScore");
         }
         for (Object o: userDisabilities){
-            if (locationDiabilityRating.get((String)o) != null){
+            if (locationDiabilityRating.get(((Map<String,Object>)o).get("name")) != null){
                 int currentRating = Integer.parseInt((String)locationDiabilityRating.get((String)o));
                 currentRating ++;
                 locationDiabilityRating.put((String)o,Integer.toString(currentRating));
             }
             else{
-                locationDiabilityRating.put((String)o,Integer.toString(1));
+                locationDiabilityRating.put((String)((Map<String,Object>)o).get("name"),Integer.toString(1));
             }
         }
         location.put("placeScore",locationDiabilityRating);
