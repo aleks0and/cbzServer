@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -72,6 +73,13 @@ public class UpdateApiController implements UpdateApi {
             this.disabilityType = disabilityType;
             Caretaker = caretaker;
         }
+    }
+
+
+    private boolean checkIfPersonMoved(ArrayList<Object> locationList){
+        List<BigDecimal> listLng = new ArrayList<>();
+        List<BigDecimal> listLat = new ArrayList<>();
+        return false;
     }
 
     public ResponseEntity<InlineResponse200> updateLocationPost(@ApiParam(value = ""  )  @Valid @RequestBody Object body) {
