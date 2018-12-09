@@ -29,14 +29,14 @@ import java.util.Map;
 @Api(value = "view", description = "the view API")
 public interface ViewApi {
 
-    @ApiOperation(value = "Returns lists of places", nickname = "viewDisabilitiesGet", notes = "Returns list of all places ids", response = Place.class, responseContainer = "List", tags={ "view", })
+    @ApiOperation(value = "Returns list of disabilities", nickname = "viewDisabilitiesGet", notes = "Returns list of all disabilities", response = String.class, responseContainer = "List", tags={ "view", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Request success", response = Place.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "Request success", response = String.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "Request failed", response = InlineResponse400.class) })
     @RequestMapping(value = "/view/disabilities",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Place>> viewDisabilitiesGet();
+    ResponseEntity<List<String>> viewDisabilitiesGet();
 
 
     @ApiOperation(value = "Returns lists of places", nickname = "viewPlacesGet", notes = "Returns list of all places ids", response = Place.class, responseContainer = "List", tags={ "view", })
